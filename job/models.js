@@ -10,6 +10,7 @@ const JobSchema = mongoose.Schema({
     location:{type: String, require: true},
     company: {type: String, require: true},
     created_at: {type: Date, require: true},
+    url:{type: String, require: true},
     saved: {type: Boolean}
 })
 
@@ -21,6 +22,7 @@ JobSchema.methods.serialize = function(){
         location: this.location || '',
         company: this.company || '',
         created_at: this.created_at || '',
+        url: this.url || '',
         saved: true
     }
 }
