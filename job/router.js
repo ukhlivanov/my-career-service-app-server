@@ -9,7 +9,7 @@ const router = express.Router();
 const jsonParser = bodyParser.json();
 
 router.post('/', jsonParser, (req, res)=>{
-    const requiredFields = ['id', 'title', 'type', 'location', 'company', 'created_at','url'];
+    const requiredFields = ['id', 'title', 'type', 'location', 'company', 'created_at','url', 'username'];
     const missingField = requiredFields.find(field => !(field in req.body));
   
     console.log(req.body)
@@ -30,7 +30,8 @@ router.post('/', jsonParser, (req, res)=>{
         location: req.body.location,
         company: req.body.company,
         created_at: req.body.created_at,
-        url: req.body.url
+        url: req.body.url,
+        username: req.body.username
     })
     // .then(job => {
     //     return res.status(201).json(job.serialize());
@@ -45,8 +46,14 @@ router.post('/', jsonParser, (req, res)=>{
       });
 });
 
+
+function getUsername(req) {
+  return req.body.username;
+}
+
 router.get('/', jsonParser, (req, res) =>{
-  Job.find()
+  console.log(req.body)
+  Job.find({username: req.body.username})
   .then(jobs => res.json(jobs.map(job => job.serialize())))
   .catch(error => res.status(500).json(error))
   // .catch(err => console.log(err))
