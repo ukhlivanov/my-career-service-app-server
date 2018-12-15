@@ -47,16 +47,20 @@ router.post('/', jsonParser, (req, res)=>{
 });
 
 
-function getUsername(req) {
-  return req.body.username;
-}
 
-router.get('/', jsonParser, (req, res) =>{
-  console.log(req.body)
+router.post('/sync', jsonParser, (req, res) =>{
+  console.log(req.body.username)
   Job.find({username: req.body.username})
   .then(jobs => res.json(jobs.map(job => job.serialize())))
   .catch(error => res.status(500).json(error))
-  // .catch(err => console.log(err))
+})
+
+
+router.get('/', jsonParser, (req, res) =>{
+  console.log(req.body)
+  Job.find()
+  .then(jobs => res.json(jobs.map(job => job.serialize())))
+  .catch(error => res.status(500).json(error))
 })
 
 router.delete('/', jsonParser, (req, res) => {
