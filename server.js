@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const cors = require('cors');
 const passport = require('passport');
 
 // Here we use destructuring assignment with renaming so the two variables
@@ -24,7 +25,7 @@ const app = express();
 
 // Logging
 app.use(morgan('common'));
-
+// app.use(cors());
 // CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

@@ -8,6 +8,8 @@ const router = express.Router();
 
 const jsonParser = bodyParser.json();
 
+const fetch = require("node-fetch");
+
 router.post('/', jsonParser, (req, res)=>{
     const requiredFields = ['id', 'title', 'type', 'location', 'company', 'created_at','url', 'username'];
     const missingField = requiredFields.find(field => !(field in req.body));
@@ -49,6 +51,13 @@ router.post('/sync', jsonParser, (req, res) =>{
   console.log(req.body.username)
   Job.find({username: req.body.username})
   .then(jobs => res.json(jobs.map(job => job.serialize())))
+  .catch(error => res.status(500).json(error))
+})
+
+router.post('/github', jsonParser, (req, res) =>{
+  fetch(`https://jobs.github.com/positions.json?description=${req.body.jobtitle}&full_time=false&location=${req.body.location}&page=1`)
+  .then(res => res.json())
+  .then(json => res.json(json))
   .catch(error => res.status(500).json(error))
 })
 
